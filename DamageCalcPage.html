@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+    <head lange="en">
+        <meta charset="utf-8">
+        <title>Pokemon DnD Damage Calculator</title>
+        <style>
+            #flexBox {
+                background: salmon;
+                width: 700px;
+            }
+            #inputLabels {
+                display: flex;
+                font-size: 14px;
+                justify-content: space-between;
+            }
+            #inputLabels p {
+                background: white;
+                border-color: black;
+                border-style: solid;
+                padding: 4px;
+                width: 100px;
+                border-width: 2px;
+            }
+            #userInputs {
+                display: flex;
+                justify-content: space-between;
+            }
+            #userInputs input {
+                width: 100px;
+                border-color: black;
+                border-style: solid;
+                border-width: 2px;
+                padding: 4px;
+            }
+            #resultLabels {
+                display: flex;
+                justify-content: space-between;
+            }
+            #resultLabels p {
+                background: white;
+                border-color: black;
+                border-style: solid;
+                border-width: 2px;
+                padding: 4px;
+                width: 100px;
+            }
+            #results {
+                display: flex;
+                justify-content: space-between;
+            }
+            #results textarea {
+                border-color: black;
+                border-style: solid;
+                resize: none;
+            }
+            #userInputs select {
+                width: 110px;
+            }
+            #buttonContainer {
+                display: flex;
+                justify-content: center;
+                margin-top: 8px;
+            }
+        </style>
+        <script type="text/javascript">
+            var rollDice = function(diceType) {
+                return Math.floor((Math.random() * diceType) + 1);
+            }
+
+            var getDefenseDie = function(diceType) {
+                if (diceType == 20) {
+                    return 10;
+                }
+                else if (diceType == 12) {
+                    return 8;
+                }
+                else if (diceType == 10) {
+                    return 6;
+                }
+                else if (diceType == 8 || diceType == 6 || diceType == 4) {
+                    return 4;
+                }
+                else {
+                    alert("please enter a valid dice number. returning 4");
+                    return 4;
+                }
+            }
+
+            var getModifier = function(power) {
+                if (power % 2 == 0) 
+                    return (power - 10) / 2;
+                else
+                    return (power - 11) / 2;
+            }
+
+            var calculateDamage = function() {
+                let numberOfDice = document.getElementById("numberOfDice").value;
+                let typeOfDice = document.getElementById("typeOfDice").value;
+                let atkPower = document.getElementById("attackValue").value;
+                let defPower = document.getElementById("defenseValue").value;
+                let useDefesne = document.getElementById("useDefense");
+                let usingDefense = useDefense.options[useDefense.selectedIndex].text;
+                let booleanDefense = true;
+                var totalDamage = 0;
+                var totalDefense = 0;
+                var totalAttack = 0;
+                var attackModifier = getModifier(atkPower);
+                var defenseModifier = getModifier(defPower);
+                var attackRolls = "";
+                var defenseRolls = "";
+                if (usingDefense == "No") {
+                    booleanDefense = false;
+                }
+                for (var i = numberOfDice; i > 0; i--) {
+                    let diceRoll = rollDice(typeOfDice);
+                    attackRolls += diceRoll + " ";
+                    totalDamage += diceRoll;
+                    totalDamage += attackModifier;
+                }
+                if (booleanDefense) {
+                    for (var x = numberOfDice; x > 0; x--) {
+                        let diceRoll = rollDice(getDefenseDie(typeOfDice));
+                        defenseRolls += diceRoll += " ";
+                        totalDamage -= diceRoll;
+                        totalDamage -= defenseModifier;
+                    }
+                }
+                document.getElementById("attackRollResults").value = attackRolls;
+                document.getElementById("defenseRollResults").value = defenseRolls;
+                document.getElementById("totalDamage").value = totalDamage;
+            }
+        </script>
+    </head>
+    <body>
+        <div id="flexBox">
+            <div id="inputLabels">
+                <p class = "descriptorText"># of Dice</p>
+                <p class = "descriptorText">Type of Dice</p>
+                <p class = "descriptorText">ATK/sATK</p>
+                <p class = "descriptorText">DEF/sDEF</p>
+                <p class = "descriptorText">Use Defense?</p>
+                
+            </div>
+            <div id="userInputs">
+                <input id="numberOfDice" type="number"/>
+                <input id="typeOfDice" type="number"/>
+                <input id="attackValue" type="number"/>
+                <input id="defenseValue" type="number"/>
+                <select id="useDefense">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div id="buttonContainer">
+                <button type="button" id="calculateButton" onclick="calculateDamage()">Calculate Damage</button>
+            </div>
+            <div id="resultLabels">
+                <p class="descriptorText">Attack Rolls:</p><p class="descriptorText">Defense Rolls:</p><p class="descriptorText">Total Damage:</p>
+            </div>
+            <div id="results">
+                <textarea id="attackRollResults"></textarea><textarea id="defenseRollResults"></textarea><textarea id="totalDamage"></textarea>
+            </div>
+        </div>
+    </body>
+</html>
