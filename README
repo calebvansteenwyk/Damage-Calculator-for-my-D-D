@@ -1,0 +1,8 @@
+This is a pretty simple damage calculator for a D&D campaign I am running.
+
+It takes in the type of dice and number of that dice used for damage. 
+(ex: a move might have a damage of 6 6-sided dice, or 6d6).
+It then takes in the attacker's attack statistic and the defender's defense statistic, 
+rolls the correct type and number of dice, uses the attack and defense to add and subtract
+to the rolled damage, and displays the total damage. It also gives an option for 
+not using the defense, for moves that specifically ignore the enemy's defense.
